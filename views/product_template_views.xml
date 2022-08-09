@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Documents List" name="documents_list_page">
+                    <field name="document_ids" widget="one2many">
+                        <tree string="Documents" multi_edit="1">
+                            <field name="name" invisible='True' />
+                            <field name="datas" widget="download_link" filename="name" string="File" />
+                            <field name="tag_ids" 
+                                widget="many2many_tags" 
+                                options="{'no_create': True, 'no_open': True}" 
+                                />
+                            <!-- <field name="tag_ids" widget="documents_tree_many2many_tags" /> -->
+                        </tree>
+                    </field>
+                    <button name="sync_tagged_documents" type="object" string="Sync documents"/>
+                    <field name="id" invisible='True'/>
+                    <field name="product_attachment_tag_po" invisible='True'/>
+                    <field name="attachment_po_ids" widget="many2many_binary" nolabel="1" colspan="2"
+                        domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]"/>
+
+                </page>
+          
+                <!-- <page string="Documents Kanban" name="documents_kanban_page">
+                    <field name="document_ids" widget="one2many">
+                        <kanban create="false"  js_class="documents_kanban" >
+                            <field name="id"/>
+                            <field name="mimetype"/>
+                            <field name="favorited_ids"/>
+                            <field name="owner_id"/>
+                            <field name="lock_uid"/>
+                            <field name="type"/>
+                            <field name="create_uid"/>
+                            <field name="url"/>
+                            <field name="create_date"/>
+                            <field name="active"/>
+                            <field name="checksum"/>
+                            <field name="name"/>
+                            <field name="res_model_name"/>
+                            <field name="res_model"/>
+                            <field name="res_name"/>
+                            <field name="activity_ids"/>
+                            <field name="activity_state"/>
+                            <field name="is_editable_attachment"/>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
+                                    <div draggable="true" t-attf-class="oe_kanban_global_area o_document_draggable o_kanban_attachment o_documents_attachment {{fileRequest ? 'oe_file_request' : ''}}" t-att-data-id="record.id.raw_value">
+                                        <div draggable="true" t-attf-class="oe_kanban_global_area o_document_draggable o_kanban_attachment o_documents_attachment {{fileRequest ? 'oe_file_request' : ''}}" t-att-data-id="record.id.raw_value">
+                                            <div t-attf-class="o_kanban_image #{fileRequest ? 'o_request_image' : ''}">
+                                                <t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)" />
+                                                <t t-set="binaryPreviewable" t-value="new RegExp('(image|video|application/pdf|text/)').test(record.mimetype.value) &amp;&amp; record.type.raw_value === 'binary'" />
+                                                <div name="document_preview" t-attf-class="o_kanban_image_wrapper #{(webimage or binaryPreviewable or youtubeVideoToken) ? 'oe_kanban_previewer' : ''}" t-att-title="fileRequest ? 'Upload file' : ''">
+                                                    <img t-if="youtubeVideoToken" width="100" height="100" alt="Document" class="o_attachment_image"
+                                                         t-attf-src="https://img.youtube.com/vi/{{youtubeVideoToken}}/0.jpg"/>
+                                                    <div t-elif="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted"/>
+                                                    <t t-elif="webimage">
+                                                        <t t-set="unique" t-value="record.checksum.value ? record.checksum.value.slice(-8) : ''"/>
+                                                        <img  t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=#{unique}" width="100" height="100" alt="Document Thumbnail" class="o_attachment_image"/>
+                                                    </t>
+                                                    <div t-elif="fileRequest" class="fa fa-upload fa-3x text-muted"/>
+                                                    <div t-else="!webimage" class="o_image o_image_thumbnail" t-att-data-mimetype="record.mimetype.value"/>
+                                                </div>
+                                            </div>
+                                            <div class="o_kanban_details">
+                                                <div class="o_kanban_details_wrapper">
+                                                    <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                                        <t t-if="record.lock_uid.raw_value">
+                                                            <i class="o_documents_lock fa fa-lock" t-att-title="record.lock_uid.value"/>
+                                                        </t>
+                                                        <field name="name" required="True" class="o_text_overflow"/>
+                                                    </div>
+                                                    <div class="o_kanban_record_body">
+                                                        <field name="tag_ids" widget="documents_many2many_tags"/>
+                                                        <field name="create_date" widget="date"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                </page> -->
+
+            </xpath>
+
+
+            <div name="button_box" position="inside">
+                <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="document_count"/></span>
+                        <span class="o_stat_text">Documents</span>
+                    </div>
+                </button>
+            </div>
+
+        </field>
+    </record>
+
+</odoo>
