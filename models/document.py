@@ -9,7 +9,6 @@ class Document(models.Model):
 
     def write(self, vals):
         write_result = super(Document, self).write(vals)
-        _logger.info("write document")
         self._sync_tags()
         return write_result
 
@@ -19,29 +18,38 @@ class Document(models.Model):
             po_tag = self.env.user.company_id.product_document_tag_po
             product_template = self.env[self.res_model].browse(self.res_id)
             if po_tag in self.tag_ids:                
-                if self.attachment_id not in product_template.attachment_po_ids:
+                if self.attachment_id not in product_template.tmpl_attachment_po_ids:
                     product_template.add_po_document(self)
             else:
-                if self.attachment_id in product_template.attachment_po_ids:
-                    product_template.remove_po_document(self)            
+                if self.attachment_id in product_template.tmpl_attachment_po_ids:
+                    product_template.remove_po_document(self)
 
-    check_if_added_to_model = fields.Char('model check')
+            so_tag = self.env.user.company_id.product_document_tag_so
+            if so_tag in self.tag_ids:                
+                if self.attachment_id not in product_template.tmpl_attachment_so_ids:
+                    product_template.add_so_document(self)
+            else:
+                if self.attachment_id in product_template.tmpl_attachment_so_ids:
+                    product_template.remove_so_document(self)
 
-    @api.onchange('tag_ids')
-    def _onchange_tag_ids(self):
-        _logger.info("tag_ids onchange triggered")
+        if self.res_model == 'product.product':
+            po_tag = self.env.user.company_id.product_document_tag_po
+            product = self.env[self.res_model].browse(self.res_id)
+            if po_tag in self.tag_ids:                
+                if self.attachment_id not in product.product_attachment_po_ids:
+                    product.add_po_document(self)
+            else:
+                if self.attachment_id in product.product_attachment_po_ids:
+                    product.remove_po_document(self)
 
-    @api.onchange('active')
-    def _onchange_locked(self):
-        _logger.info("active onchange triggered")
+            so_tag = self.env.user.company_id.product_document_tag_so
+            if so_tag in self.tag_ids:                
+                if self.attachment_id not in product.product_attachment_so_ids:
+                    product.add_so_document(self)
+            else:
+                if self.attachment_id in product.product_attachment_so_ids:
+                    product.remove_so_document(self)                      
 
-    @api.onchange('partner_id')
-    def _onchange_partner_id(self):
-        _logger.info("partner_id onchange triggered")
-
-    @api.onchange('name')
-    def _onchange_name(self):
-        _logger.info("name onchange triggered")
 
     def add_po_tag(self):
         po_tag = self.env.user.company_id.product_document_tag_po
@@ -55,4 +63,18 @@ class Document(models.Model):
         for document in self:
             if po_tag in document.tag_ids:
                 _logger.info("removing po tag")
-                document.write({'tag_ids':[(3,po_tag.id,_)]})               
+                document.write({'tag_ids':[(3,po_tag.id,_)]})       
+
+    def add_so_tag(self):
+        so_tag = self.env.user.company_id.product_document_tag_so
+        for document in self:
+            if so_tag not in document.tag_ids:
+                _logger.info("adding so tag")
+                document.write({'tag_ids':[(4,so_tag.id,_)]})
+
+    def remove_so_tag(self):
+        so_tag = self.env.user.company_id.product_document_tag_so
+        for document in self:
+            if so_tag in document.tag_ids:
+                _logger.info("removing so tag")
+                document.write({'tag_ids':[(3,so_tag.id,_)]})                           
