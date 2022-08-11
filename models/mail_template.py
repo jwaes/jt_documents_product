@@ -24,9 +24,9 @@ class MailTemplate(models.Model):
     is_so = fields.Boolean(compute='_compute_is_so', string='Is So')
 
 
-    product_document_tag_po = fields.Many2one('documents.tag', string="Product document PO tag", domain=_folder_id,
-                                     default=lambda self: self.env.ref('product_document_tag_po',
-                                                                       raise_if_not_found=False))
+    # product_document_tag_po = fields.Many2one('documents.tag', string="Product document PO tag", domain=_folder_id,
+    #                                  default=lambda self: self.env.ref('product_document_tag_po',
+    #                                                                    raise_if_not_found=False))
     is_po = fields.Boolean(compute='_compute_is_po', string='Is Po')
     
 
@@ -45,26 +45,27 @@ class MailTemplate(models.Model):
         active_id = self.env.context.get('active_id')
         for tmpl in self:
             tmpl.attachment_ids = tmpl.fixed_attachment_ids
-
-            if tmpl.is_po and tmpl.product_document_tag_po:
+            po_tag = self.env.user.company_id.product_document_tag_po
+            if tmpl.is_po and po_tag:
                 pos = self.env[tmpl.model].search([('id', '=', active_id)])
                 for po in pos:
                     for line in po.order_line:
                         product = line.product_id
-                        for document in product.document_ids:
-                            for tag in document.tag_ids:
-                                if tag.id == tmpl.product_document_tag_po.id:
-                                    tmpl.attachment_ids = tmpl.attachment_ids | document.attachment_id
+                        for attach in product.product_tmpl_id.attachment_po_ids:
+                            tmpl.attachment_ids = tmpl.attachment_ids | attach
+                            # for tag in document.tag_ids:
+                            #     if tag.id == tmpl.product_document_tag_po.id:
+                            #         tmpl.attachment_ids = tmpl.attachment_ids | document.attachment_id
 
-            if tmpl.is_so and tmpl.product_document_tag_so:
-                sos = self.env[tmpl.model].search([('id', '=', active_id)])
-                for so in sos:
-                    for line in so.order_line:
-                        product = line.product_id
-                        for document in product.document_ids:
-                            for tag in document.tag_ids:
-                                if tag.id == tmpl.product_document_tag_so.id:
-                                    tmpl.attachment_ids = tmpl.attachment_ids | document.attachment_id
+            # if tmpl.is_so and tmpl.product_document_tag_so:
+            #     sos = self.env[tmpl.model].search([('id', '=', active_id)])
+            #     for so in sos:
+            #         for line in so.order_line:
+            #             product = line.product_id
+            #             for document in product.document_ids:
+            #                 for tag in document.tag_ids:
+            #                     if tag.id == tmpl.product_document_tag_so.id:
+            #                         tmpl.attachment_ids = tmpl.attachment_ids | document.attachment_id
     
 
     def generate_email(self, res_ids, fields):

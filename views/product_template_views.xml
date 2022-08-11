@@ -8,25 +8,12 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Documents List" name="documents_list_page">
-                    <field name="document_ids" widget="one2many">
-                        <tree string="Documents" multi_edit="1">
-                            <field name="name" invisible='True' />
-                            <field name="datas" widget="download_link" filename="name" string="File" />
-                            <field name="tag_ids" 
-                                widget="many2many_tags" 
-                                options="{'no_create': True, 'no_open': True}" 
-                                />
-                            <!-- <field name="tag_ids" widget="documents_tree_many2many_tags" /> -->
-                        </tree>
-                    </field>
-                    <button name="sync_tagged_documents" type="object" string="Sync documents"/>
-                    <field name="id" invisible='True'/>
-                    <field name="product_attachment_tag_po" invisible='True'/>
-                    <field name="attachment_po_ids" widget="many2many_binary" nolabel="1" colspan="2"
-                        domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]"/>
-
+                    <h3>PO attachments</h3>
+                    <field name="id" invisible='True' />
+                    <field name="product_attachment_tag_po" invisible='True' />
+                    <field name="attachment_po_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]" />
                 </page>
-          
+
                 <!-- <page string="Documents Kanban" name="documents_kanban_page">
                     <field name="document_ids" widget="one2many">
                         <kanban create="false"  js_class="documents_kanban" >
@@ -96,7 +83,9 @@
             <div name="button_box" position="inside">
                 <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
                     <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_value"><field name="document_count"/></span>
+                        <span class="o_stat_value">
+                            <field name="document_count" />
+                        </span>
                         <span class="o_stat_text">Documents</span>
                     </div>
                 </button>

@@ -10,7 +10,7 @@
             <xpath expr="//page[@name='content']" position="inside">
                 <field name="fixed_attachment_ids" widget="many2many_binary" />
             </xpath>
-            <xpath expr="//page[@name='dynamic_placeholder_generator']" position="after">
+            <!-- <xpath expr="//page[@name='dynamic_placeholder_generator']" position="after">
                 <page string="Document tags" name="document_tags">
                     <field name="is_so" invisible="True"/>
                     <field name="is_po" invisible="True"/>
@@ -23,7 +23,7 @@
                         <field name="product_document_tag_po" />
                     </div>
                 </page>
-            </xpath>
+            </xpath> -->
         </field>
     </record>
 
