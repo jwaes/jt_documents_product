@@ -9,8 +9,8 @@ class ProductProduct(models.Model):
     product_document_ids = fields.One2many('documents.document', string='Documents', compute='_compute_product_document_ids')
     product_document_count = fields.Integer('Document Count', compute='_compute_product_document_count')
 
-    product_attachment_po_ids = fields.Many2many('ir.attachment','attachment_product_po_rel','product_id','attach_id', string='PO Attachments',) 
-    product_attachment_so_ids = fields.Many2many('ir.attachment','attachment_product_so_rel','product_id','attach_id', string='SO Attachments',)     
+    product_attachment_po_ids = fields.Many2many('ir.attachment','attachment_product_po_rel','product_id','attach_id', string='Variant PO Attachments',) 
+    product_attachment_so_ids = fields.Many2many('ir.attachment','attachment_product_so_rel','product_id','attach_id', string='Variant SO Attachments',)     
 
     @api.onchange('product_attachment_po_ids')
     def _onchange_product_attachment_po_ids(self):
