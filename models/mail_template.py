@@ -16,6 +16,8 @@ class MailTemplate(models.Model):
         foldr = self.env.company.product_folder
         return [('folder_id', '=', foldr.id)]
 
+    send_dropship_documents = fields.Boolean(default=False, string="Send dropship documents")
+
     attachment_ids = fields.Many2many(
         'ir.attachment', compute='_compute_attachment_ids', string='attachment_ids')
 
@@ -56,15 +58,16 @@ class MailTemplate(models.Model):
                             tmpl.attachment_ids = tmpl.attachment_ids | attach
                         for attach in product.product_attachment_po_ids:
                             tmpl.attachment_ids = tmpl.attachment_ids | attach
-                    company = po.partner_id
-                    if not company.is_company:
-                        company = po.partner_id.company_id
-                    if company.send_dropship_report_with_po and company.dropship_report:
-                        for dropship in po.picking_ids.filtered(lambda p: p.is_dropship):
-                            report_data = self._generate_dropship_report(company.dropship_report, dropship)
-                            if report_data:
-                                Attachment = self.env['ir.attachment']
-                                tmpl.write({'attachment_ids':[(4,Attachment.create(report_data).id,_)]})
+                    if tmpl.send_dropship_documents:
+                        company = po.partner_id
+                        if not company.is_company:
+                            company = po.partner_id.company_id
+                        if company.send_dropship_report_with_po and company.dropship_report:
+                            for dropship in po.picking_ids.filtered(lambda p: p.is_dropship):
+                                report_data = self._generate_dropship_report(company.dropship_report, dropship, po)
+                                if report_data:
+                                    Attachment = self.env['ir.attachment']
+                                    tmpl.write({'attachment_ids':[(4,Attachment.create(report_data).id,_)]})
 
             so_tag = self.env.user.company_id.product_document_tag_so
             if tmpl.is_so and so_tag:
@@ -77,7 +80,7 @@ class MailTemplate(models.Model):
                         for attach in product.product_attachment_so_ids:
                             tmpl.attachment_ids = tmpl.attachment_ids | attach
             
-    def _generate_dropship_report(self, report, dropship):
+    def _generate_dropship_report(self, report, dropship, po):
         if dropship:
             if report.report_type in ['qweb-html', 'qweb-pdf']:
                 result, format = report._render_qweb_pdf([dropship.id])
@@ -97,8 +100,6 @@ class MailTemplate(models.Model):
                 'name': attachment_name,
                 'datas': result,
                 'type': 'binary',
-                # 'res_model': 'mail.message',
-                # 'res_id': mail.mail_message_id.id,
             }            
             return attachment_data
 
