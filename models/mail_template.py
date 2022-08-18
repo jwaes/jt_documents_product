@@ -86,6 +86,9 @@ class MailTemplate(models.Model):
                     raise UserError(_('Unsupported report type %s found.', report.report_type))
                 result, format = res
             
+            if not report.attachment:
+                raise UserError(_('The report should have the \'Save as Attachment Prefix\' field filled in'))
+
             attachment_name = safe_eval(report.attachment, {'object': dropship, 'time': time})
             result = base64.b64encode(result)
 
