@@ -3,6 +3,7 @@ from odoo.tools.safe_eval import safe_eval, time
 import base64
 import logging
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 _logger = logging.getLogger(__name__)
