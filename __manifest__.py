@@ -14,10 +14,10 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.6',
+    'version': '0.9',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','documents', 'documents_product', 'sale_management', 'purchase'],
+    'depends': ['base','documents', 'documents_product', 'sale_management', 'purchase', 'contacts'],
 
     # always loaded
     'data': [
@@ -25,6 +25,7 @@
         # 'views/mail_template_views.xml',
         'views/document_views.xml',
         'views/product_template_views.xml',
+        'views/res_partner_views.xml',
 
     ],
     # only loaded in demonstration mode

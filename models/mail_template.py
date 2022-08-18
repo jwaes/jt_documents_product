@@ -1,3 +1,6 @@
+from odoo.tools.safe_eval import safe_eval, time
+
+import base64
 import logging
 from odoo import api, fields, models, _
 
@@ -51,7 +54,16 @@ class MailTemplate(models.Model):
                         for attach in product.product_tmpl_id.tmpl_attachment_po_ids:
                             tmpl.attachment_ids = tmpl.attachment_ids | attach
                         for attach in product.product_attachment_po_ids:
-                            tmpl.attachment_ids = tmpl.attachment_ids | attach                            
+                            tmpl.attachment_ids = tmpl.attachment_ids | attach
+                    company = po.partner_id
+                    if not company.is_company:
+                        company = po.partner_id.company_id
+                    if company.send_dropship_report_with_po and company.dropship_report:
+                        for dropship in po.picking_ids.filtered(lambda p: p.is_dropship):
+                            report_data = self._generate_dropship_report(company.dropship_report, dropship)
+                            if report_data:
+                                Attachment = self.env['ir.attachment']
+                                tmpl.write({'attachment_ids':[(4,Attachment.create(report_data).id,_)]})
 
             so_tag = self.env.user.company_id.product_document_tag_so
             if tmpl.is_so and so_tag:
@@ -62,8 +74,31 @@ class MailTemplate(models.Model):
                         for attach in product.product_tmpl_id.tmpl_attachment_so_ids:
                             tmpl.attachment_ids = tmpl.attachment_ids | attach                          
                         for attach in product.product_attachment_so_ids:
-                            tmpl.attachment_ids = tmpl.attachment_ids | attach                              
-    
+                            tmpl.attachment_ids = tmpl.attachment_ids | attach
+            
+    def _generate_dropship_report(self, report, dropship):
+        if dropship:
+            if report.report_type in ['qweb-html', 'qweb-pdf']:
+                result, format = report._render_qweb_pdf([dropship.id])
+            else:
+                res = report._render([dropship])
+                if not res:
+                    raise UserError(_('Unsupported report type %s found.', report.report_type))
+                result, format = res
+            
+            attachment_name = safe_eval(report.attachment, {'object': dropship, 'time': time})
+            result = base64.b64encode(result)
+
+            attachment_data = {
+                'name': attachment_name,
+                'datas': result,
+                'type': 'binary',
+                # 'res_model': 'mail.message',
+                # 'res_id': mail.mail_message_id.id,
+            }            
+            return attachment_data
+
+
 
     def generate_email(self, res_ids, fields):
         res = super().generate_email(res_ids, fields)
