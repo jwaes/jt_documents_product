@@ -12,6 +12,13 @@ class ProductProduct(models.Model):
     product_attachment_po_ids = fields.Many2many('ir.attachment','attachment_product_po_rel','product_id','attach_id', string='Variant PO Attachments',) 
     product_attachment_so_ids = fields.Many2many('ir.attachment','attachment_product_so_rel','product_id','attach_id', string='Variant SO Attachments',)     
 
+    product_calculated_attachment_po_ids = fields.Many2many('ir.attachment',compute='_compute_product_calculated_attachment_po_ids') 
+
+    @api.depends('product_attachment_po_ids')
+    def _compute_product_calculated_attachment_po_ids(self):
+        self.product_calculated_attachment_po_ids = self.product_attachment_po_ids | self.product_tmpl_id.tmpl_attachment_po_ids
+
+
     @api.onchange('product_attachment_po_ids')
     def _onchange_product_attachment_po_ids(self):
         self.ensure_one()
