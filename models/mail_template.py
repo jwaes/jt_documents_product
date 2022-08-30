@@ -62,7 +62,7 @@ class MailTemplate(models.Model):
                         company = po.partner_id
                         if not company.is_company:
                             company = po.partner_id.company_id
-                        if company.send_dropship_report_with_po and company.dropship_report:
+                        if company.partner_id.send_dropship_report_with_po and company.dropship_report:
                             for dropship in po.picking_ids.filtered(lambda p: p.is_dropship):
                                 report_data = self._generate_dropship_report(company.dropship_report, dropship, po)
                                 if report_data:
