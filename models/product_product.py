@@ -16,7 +16,9 @@ class ProductProduct(models.Model):
 
     @api.depends('product_attachment_po_ids')
     def _compute_product_calculated_attachment_po_ids(self):
-        self.product_calculated_attachment_po_ids = self.product_attachment_po_ids | self.product_tmpl_id.tmpl_attachment_po_ids
+        for prd in self:
+            prd.product_calculated_attachment_po_ids = prd.product_attachment_po_ids | prd.product_tmpl_id.tmpl_attachment_po_ids
+            blah = 1
 
 
     @api.onchange('product_attachment_po_ids')
