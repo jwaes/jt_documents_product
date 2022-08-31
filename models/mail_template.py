@@ -59,10 +59,17 @@ class MailTemplate(models.Model):
                         for attach in product.product_attachment_po_ids:
                             tmpl.attachment_ids = tmpl.attachment_ids | attach
                     if tmpl.send_dropship_documents:
-                        company = po.partner_id
-                        if not company.is_company:
-                            company = po.partner_id.company_id
-                        if company.partner_id.send_dropship_report_with_po and company.dropship_report:
+                        partner = po.partner_id
+                        send_dropship_report = False
+                        company = None
+                        if partner.is_company:
+                            company = partner
+                            send_dropship_report = company.send_dropship_report_with_po
+                            company = partner
+                        elif partner.parent_id:
+                            company = partner.parent_id
+                            send_dropship_report = company.send_dropship_report_with_po
+                        if send_dropship_report and company.dropship_report:
                             for dropship in po.picking_ids.filtered(lambda p: p.is_dropship):
                                 report_data = self._generate_dropship_report(company.dropship_report, dropship, po)
                                 if report_data:
