@@ -104,6 +104,7 @@ class ProductTemplate(models.Model):
 
     def fix_document_models(self):
         for record in self:
+            _logger.info("Product template: %s", record.name)
             for po_a in record.tmpl_attachment_po_ids:
                 if po_a.res_model != record._name:
                     _logger.info("PO model does not match")
@@ -113,7 +114,12 @@ class ProductTemplate(models.Model):
                     _logger.info("PO model matches")
             for so_a in record.tmpl_attachment_so_ids:
                 if so_a.res_model != record._name:
+                    _logger.info("SO model does not match")
                     so_a.res_model = record._name
                     so_a.res_id = record.id
+                else:
+                    _logger.info("SO model matches")                    
+            for product in record.product_variant_ids:
+                product.fix_document_models()
 
 
