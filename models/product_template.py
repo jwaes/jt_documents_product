@@ -102,4 +102,18 @@ class ProductTemplate(models.Model):
             ],
         }
 
+    def fix_document_models(self):
+        for record in self:
+            for po_a in record.tmpl_attachment_po_ids:
+                if po_a.res_model != record._name:
+                    _logger.info("PO model does not match")
+                    po_a.res_model = record._name
+                    po_a.res_id = record.id
+                else:
+                    _logger.info("PO model matches")
+            for so_a in record.tmpl_attachment_so_ids:
+                if so_a.res_model != record._name:
+                    so_a.res_model = record._name
+                    so_a.res_id = record.id
+
 

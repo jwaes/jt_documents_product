@@ -83,9 +83,9 @@ class MailTemplate(models.Model):
                     for line in so.order_line:
                         product = line.product_id
                         for attach in product.product_tmpl_id.tmpl_attachment_so_ids:
-                            tmpl.attachment_ids = tmpl.attachment_ids | attach                          
+                            tmpl.attachment_ids = tmpl.attachment_ids | attach.copy()                         
                         for attach in product.product_attachment_so_ids:
-                            tmpl.attachment_ids = tmpl.attachment_ids | attach
+                            tmpl.attachment_ids = tmpl.attachment_ids | attach.copy()
             
     def _generate_dropship_report(self, report, dropship, po):
         if dropship:

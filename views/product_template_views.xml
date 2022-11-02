@@ -13,13 +13,13 @@
                             <h3>Sales order attachments</h3>
                             <field name="id" invisible='True' />
                             <field name="product_attachment_tag_so" invisible='True' />
-                            <field name="tmpl_attachment_so_ids" widget="many2many_binary" readonly="1" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_so, 'in', 'tag_ids')]" />
+                            <field name="tmpl_attachment_so_ids" widget="many2many_binary" readonly="1" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_so, 'in', 'tag_ids')]" />            
                         </group>
                         <group>
                             <h3>Purchase order attachments</h3>
                             <field name="id" invisible='True' />
                             <field name="product_attachment_tag_po" invisible='True' />
-                            <field name="tmpl_attachment_po_ids" widget="many2many_binary" readonly="1" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]" />
+                            <field name="tmpl_attachment_po_ids" widget="many2many_binary" readonly="1" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]" />                        
                         </group>
                     </group>
                 </page>
@@ -56,14 +56,16 @@
                             <h6>Template attachments</h6>
                             <field name="tmpl_attachment_so_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_so, 'in', 'tag_ids')]"  readonly="1"  />
                             <h6>Variant attachments</h6>                            
-                            <field name="product_attachment_so_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.product'), ('res_id', '=', id), (product_attachment_tag_so, 'in', 'tag_ids')]"  readonly="1" />
+                            <field name="product_attachment_so_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.product'), ('res_id', '=', id), (product_attachment_tag_so, 'in', 'tag_ids')]"  readonly="1"/>
+                            
                         </group>
                         <group col='1'>
                             <h5>Purchase order attachments</h5>
                             <h6>Template attachments</h6>
                             <field name="tmpl_attachment_po_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.template'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]"  readonly="1" />
                             <h6>Variant attachments</h6>                            
-                            <field name="product_attachment_po_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.product'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]"  readonly="1" />
+                            <field name="product_attachment_po_ids" widget="many2many_binary" nolabel="1" colspan="2" domain="['&amp;', ('res_model', '=', 'product.product'), ('res_id', '=', id), (product_attachment_tag_po, 'in', 'tag_ids')]"  readonly="1"/>
+                            
                         </group>
                     </group>
                 </page>
