@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="view_partner_form_inherit_documents_product" model="ir.ui.view">
-        <field name="name">res.partner.purchase.documents.product.inherit</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
-        <field name="arch" type="xml">
-            <xpath expr="//group[@name='purchase']" position="inside">
-                <field name="send_dropship_report_with_po" attrs="{'invisible': [('is_company', '=', False)]}" />
-                <field name="dropship_report" attrs="{'invisible': ['|', ('is_company', '=', False), ('send_dropship_report_with_po', '=', False)], 'required': [('send_dropship_report_with_po', '=', True)] }" />
-            </xpath>
-        </field>
-    </record>
-
+ <record id="view_partner_form_inherit_documents_product" model="ir.ui.view">
+  <field name="name">res.partner.purchase.documents.product.inherit</field>
+  <field name="model">res.partner</field>
+  <field name="inherit_id" ref="base.view_partner_form"/>
+  <field name="arch" type="xml">
+   <xpath expr="//group[@name='purchase']" position="inside">
+    <field invisible="is_company == False" name="send_dropship_report_with_po"/>
+    <field invisible="is_company == False or send_dropship_report_with_po == False" name="dropship_report" required="send_dropship_report_with_po == True"/>
+   </xpath></field>
+ </record>
 </odoo>
