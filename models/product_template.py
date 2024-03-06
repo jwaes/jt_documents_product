@@ -10,7 +10,7 @@ class ProductTemplate(models.Model):
         foldr = self._get_document_folder()
         return [('folder_id', '=', foldr.id)]
 
-    tmpl_document_ids = fields.One2many('documents.document', string='Documents', compute='_compute_tmpl_document_ids')
+    tmpl_document_ids = fields.One2many('documents.document', string='Template documents', compute='_compute_tmpl_document_ids')
     tmpl_document_count = fields.Integer('Document Count', compute='_compute_tmpl_document_count')
 
     tmpl_attachment_po_ids = fields.Many2many('ir.attachment','attachment_product_tmpl_po_rel','product_tmpl_id','attach_id', string='PO Attachments',) 

@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    product_document_ids = fields.One2many('documents.document', string='Variant Documents', compute='_compute_product_document_ids')
+    product_document_ids = fields.One2many('documents.document', string='Variant documents', compute='_compute_product_document_ids')
     product_document_count = fields.Integer('Variant Document Count', compute='_compute_product_document_count')
 
     product_attachment_po_ids = fields.Many2many('ir.attachment','attachment_product_po_rel','product_id','attach_id', string='Variant PO Attachments',) 
