@@ -90,7 +90,7 @@ class MailTemplate(models.Model):
     def _generate_dropship_report(self, report, dropship, po):
         if dropship:
             if report.report_type in ['qweb-html', 'qweb-pdf']:
-                result, format = report._render_qweb_pdf([dropship.id])
+                result, format = report._render_qweb_pdf(dropship.id)
             else:
                 res = report._render([dropship])
                 if not res:
