@@ -65,7 +65,7 @@ class ProductProduct(models.Model):
 
     @api.depends('product_attachment_po_ids')
     def _compute_product_document_ids(self):
-        documents = self.env['documents.document'].search([('res_model', '=', self._name), ('res_id', '=', self.id), ('type', '=', 'binary'), ])
+        documents = self.env['documents.document'].search([('res_model', '=', self._name), ('res_id', 'in', self.ids), ('type', '=', 'binary'), ])
         self.product_document_ids = documents
 
 
