@@ -35,7 +35,7 @@ class SaleOrder(models.Model):
     #         
         for order in self:
             order_result = result.setdefault(order.id, {})
-            docs = order.order_line.product_id.product_document_ids.filtered(lambda d: s.mail_attach_on_so == True)
+            docs = order.order_line.product_id.product_document_ids.filtered(lambda s: s.mail_attach_on_so == True)
             _logger.info("docs are %s", len(docs))
             copied_docs = docs.ir_attachment_id.copy()
             
