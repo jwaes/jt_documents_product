@@ -12,9 +12,11 @@ def migrate(cr, version):
     so_tag = util.env(cr).user.company_id.product_document_tag_so
     _logger.info("SO tag is %s ", so_tag.name)    
 
-    ids = util.env(cr)['documents.document'].search([['tag_ids', 'in', [po_tag.id, so_tag.id]]]).ids
+    attach_ids = util.env(cr)['documents.document'].search([['tag_ids', 'in', [po_tag.id, so_tag.id]]]).attachment_id.ids
 
-    ProductDocument = util.env(cr)['documents.document']
+    ids = util.env(cr)['product.document'].search([['ir_attachment_id', 'in', attach_ids ]]).ids
+
+    ProductDocument = util.env(cr)['product.document']
     for record in util.iter_browse(ProductDocument, ids):
         _logger.info("Product document %s", record.name)
         if po_tag in record.tag_ids:
