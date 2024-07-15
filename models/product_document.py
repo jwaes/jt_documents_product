@@ -26,6 +26,6 @@ class ProductDocument(models.Model):
             },
             'domain': [
                 ['res_model', '=', self.ir_attachment_id.res_model],
-                ['res_id', '=', self.ir_attachment_id.res_id.id],
+                ['res_id', '=', self.ir_attachment_id.res_id],
             ],
         }      
