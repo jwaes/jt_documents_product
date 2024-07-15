@@ -13,8 +13,8 @@ class ProductDocument(models.Model):
 
 
     def action_goto_documents(self):
-        self.ensure_one()
-        folder_id = self.env['product.product']._get_document_folder()
+        company = self.company_id or self.env.company
+        folder_id = company.product_folder
         return {
             'name': _('Documents'),
             'res_model': 'documents.document',
