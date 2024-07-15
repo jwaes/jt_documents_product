@@ -39,8 +39,8 @@ class SaleOrder(models.Model):
             _logger.info("docs are %s", len(docs))
             for doc in docs:
                 copied_doc = doc.ir_attachment_id.copy()
-                order_result.setdefault('attachment_ids', []).extend(copied_doc.get('attachment_ids', []))
-                order_result.setdefault('attachments', []).extend(copied_doc.get('attachments', []))            
+                order_result.setdefault('attachment_ids', []).extend(copied_doc.ids)
+                order_result.setdefault('attachments', []).extend(copied_doc.name)        
 
 
         return result
