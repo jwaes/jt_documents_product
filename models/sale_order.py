@@ -37,10 +37,10 @@ class SaleOrder(models.Model):
             order_result = result.setdefault(order.id, {})
             docs = order.order_line.product_id.product_document_ids.filtered(lambda s: s.mail_attach_on_so == True)
             _logger.info("docs are %s", len(docs))
-            for doc in docs:
-                copied_doc = doc.ir_attachment_id.copy()
-                order_result.setdefault('attachment_ids', []).extend(copied_doc.ids)
-                order_result.setdefault('attachments', []).extend(copied_doc.name)        
+            order_result.setdefault('attachment_ids', [])
+            order_result.setdefault('attachments', [])
+            for doc in docs:          
+                order_result.append({ doc.ir_attachment_id.name : doc.ir_attachment_id.datas })        
 
 
         return result
