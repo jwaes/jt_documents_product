@@ -10,6 +10,8 @@ class ProductDocument(models.Model):
     mail_attach_on_so = fields.Boolean(string="Attach Sales Order")
     mail_attach_on_po = fields.Boolean(string="Attach Purchase Order")
 
+
+
     def action_goto_documents(self):
         self.ensure_one()
         folder_id = self.env['product.product']._get_document_folder()
@@ -23,7 +25,7 @@ class ProductDocument(models.Model):
                 "searchpanel_default_folder_id": folder_id,
             },
             'domain': [
-                ['res_model', '=', self._name],
-                ['res_id', '=', self.id],
+                ['res_model', '=', self.ir_attachment_id.res_model],
+                ['res_id', '=', self.ir_attachment_id.res_id.id],
             ],
         }      
