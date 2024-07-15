@@ -6,7 +6,7 @@
         <field name="model">mail.template</field>
         <field name="inherit_id" ref="mail.email_template_form"/>
         <field name="arch" type="xml">
-            <field name="report_name" position="after">
+            <field name="report_template_ids" position="after">
                 <field name="send_dropship_documents"/>
             </field>
         </field>

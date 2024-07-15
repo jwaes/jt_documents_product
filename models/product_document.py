@@ -1,8 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+_logger = logging.getLogger(__name__)
 
 class ProductDocument(models.Model):
     _inherit = 'product.document'
@@ -13,8 +15,11 @@ class ProductDocument(models.Model):
 
 
     def action_goto_documents(self):
+        
         company = self.company_id or self.env.company
         folder_id = company.product_folder
+
+        _logger.info("folder is %s", folder_id.name)
         return {
             'name': _('Documents'),
             'res_model': 'documents.document',
@@ -29,3 +34,4 @@ class ProductDocument(models.Model):
                 ['res_id', '=', self.ir_attachment_id.res_id],
             ],
         }      
+    

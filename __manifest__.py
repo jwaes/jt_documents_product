@@ -17,12 +17,12 @@
     'version': '2.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','documents', 'documents_product', 'sale_management', 'purchase', 'contacts'],
+    'depends': ['base','documents', 'documents_product', 'sale_management', 'sale', 'purchase', 'contacts'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        # 'views/mail_template_views.xml',
+        'views/mail_template_views.xml',
         'views/product_document_views.xml',
         # 'data/fixdocs_action_data.xml',
         # 'report/purchase_order_templates.xml',
