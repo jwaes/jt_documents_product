@@ -38,7 +38,12 @@ class SaleOrder(models.Model):
             docs = order.order_line.product_id.product_document_ids.filtered(lambda s: s.mail_attach_on_so == True)
             _logger.info("docs are %s", len(docs))
             order_result.setdefault('attachment_ids', [])
-            order_result.setdefault('attachments', []).extend([( docs.ir_attachment_id.name,  docs.ir_attachment_id.datas)])
+            # order_result.setdefault('attachments', []).extend([( docs.ir_attachment_id.name,  docs.ir_attachment_id.datas)])
+            attachments = []
+            for doc in docs:
+                attachments.append([( doc.ir_attachment_id.name,  doc.ir_attachment_id.datas)])
+
+            order_result['attachments'] = attachments
             # return {'attachments': [( dosc.ir_attachment_id.name,  docs.ir_attachment_id.datas)]}
             # for doc in docs:          
             #     order_result.append({ doc.ir_attachment_id.name : doc.ir_attachment_id.datas })        
