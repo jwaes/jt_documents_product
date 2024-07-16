@@ -56,7 +56,7 @@ class PurchaseOrder(models.Model):
                 _logger.info("dropship report of correct type")
                 _logger.info("report %s (%s)", report.name, str(report.id))
                 _logger.info("dropship %s (%s)", dropship.name, str(dropship.id))
-                result, format = report.with_context(lang=lang)._render_qweb_pdf(dropship.id)
+                result, format = report.with_context(lang=lang)._render_qweb_pdf(report.id, dropship.id)
                 _logger.info("dropship report generated")
             else:
                 res = report._render([dropship])
