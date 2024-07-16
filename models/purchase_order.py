@@ -38,7 +38,9 @@ class PurchaseOrder(models.Model):
                     for dropship in order.picking_ids.filtered(lambda p: p.is_dropship):
                         report_data = order._generate_dropship_report(company.dropship_report, dropship)
                         if report_data:
-                            attachments.extend([( report_data['name'], report_data['attachment_data'])])
+                            Attachment = self.env['ir.attachment']
+                            delivery_slip = Attachment.create(report_data)
+                            attachments.extend([( delivery_slip.name, delivery_slip.datas)])
 
         return result
 
