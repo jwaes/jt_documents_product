@@ -34,12 +34,16 @@ class PurchaseOrder(models.Model):
                 elif partner.parent_id:
                     company = partner.parent_id
                     send_dropship_report = company.send_dropship_report_with_po
+                _logger.info("send_dropship_report %s ", str(send_dropship_report))
+                _logger.info("company.dropship_report %s ", str(company.dropship_report))
                 if send_dropship_report and company.dropship_report:
                     for dropship in order.picking_ids.filtered(lambda p: p.is_dropship):
                         report_data = order._generate_dropship_report(company.dropship_report, dropship)
                         if report_data:
+                            _logger.info("report_data exists")
                             Attachment = self.env['ir.attachment']
                             delivery_slip = Attachment.create(report_data)
+                            _logger.info("delivery_slip created")
                             attachments.extend([( delivery_slip.name, delivery_slip.datas)])
 
         return result
@@ -47,8 +51,11 @@ class PurchaseOrder(models.Model):
 
     def _generate_dropship_report(self, report, dropship, lang='en'):
         if dropship:
+            _logger.info("dropship found")
             if report.report_type in ['qweb-html', 'qweb-pdf']:
+                _logger.info("dropship report of correct type")
                 result, format = report.with_context(lang=lang)._render_qweb_pdf(dropship.id)
+                _logger.info("dropship report generated")
             else:
                 res = report._render([dropship])
                 if not res:
