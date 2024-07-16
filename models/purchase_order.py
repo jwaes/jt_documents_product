@@ -17,7 +17,7 @@ class PurchaseOrder(models.Model):
      
         for order in self:
             order_result = result.setdefault(order.id, {})
-            docs = order.order_line.product_id.product_document_ids.filtered(lambda s: s.mail_attach_on_oo == True)
+            docs = order.order_line.product_id.product_document_ids.filtered(lambda s: s.mail_attach_on_po == True)
             order_result.setdefault('attachment_ids', [])
             attachments = order_result.setdefault('attachments', [])
             for doc in docs:
