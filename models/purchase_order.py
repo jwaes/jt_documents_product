@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 
 class PurchaseOrder(models.Model):
-    _inherit = 'purchase'
+    _inherit = 'purchase.order'
 
     def _process_attachments_for_template_post(self, mail_template):
         result = super()._process_attachments_for_template_post(mail_template)
