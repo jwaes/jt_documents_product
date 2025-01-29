@@ -21,7 +21,7 @@ class ProductDocument(models.Model):
 
         _logger.info("folder is %s", folder_id.name)
         return {
-            'name': _('Documents'),
+            'name': self.env._('Documents'),
             'res_model': 'documents.document',
             'type': 'ir.actions.act_window',
             'views': [(False, 'list')],
