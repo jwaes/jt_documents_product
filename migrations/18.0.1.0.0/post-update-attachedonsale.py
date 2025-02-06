@@ -16,4 +16,4 @@ def migrate(cr, version):
             doc.attached_on_sale = 'quotation'
 
             
-    util.field.remove_field(cr, "product.document", "mail_attach_on_so")
+    util.fields.remove_field(cr, "product.document", "mail_attach_on_so")
