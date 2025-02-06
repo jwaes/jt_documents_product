@@ -5,7 +5,7 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     def _folder_id(self):
-        foldr = self.env.company.product_folder
+        foldr = self.env.company.product_folder_id
         return [('folder_id', '=', foldr.id)]
 
     product_document_tag_so = fields.Many2one('documents.tag', string="Product document SO tag", domain=_folder_id,

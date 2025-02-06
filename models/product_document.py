@@ -17,7 +17,7 @@ class ProductDocument(models.Model):
     def action_goto_documents(self):
         
         company = self.company_id or self.env.company
-        folder_id = company.product_folder
+        folder_id = company.product_folder_id
 
         _logger.info("folder is %s", folder_id.name)
         return {

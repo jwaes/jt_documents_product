@@ -14,6 +14,3 @@ def migrate(cr, version):
     for doc in documents:
         if doc.mail_attach_on_so:
             doc.attached_on_sale = 'quotation'
-
-            
-    util.fields.remove_field(cr, "product.document", "mail_attach_on_so")
