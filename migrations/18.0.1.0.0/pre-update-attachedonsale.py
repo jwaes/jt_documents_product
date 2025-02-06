@@ -9,7 +9,7 @@ def migrate(cr, version):
     env = util.env(cr)
 
     documents = env["product.document"].search([])
-    
+
     for doc in documents:
         if doc.mail_attach_on_so:
             doc.attached_on_sale = 'quotation'
