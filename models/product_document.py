@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 class ProductDocument(models.Model):
     _inherit = 'product.document'
 
-    mail_attach_on_so = fields.Boolean(string="Attach Sales Order")
+    # mail_attach_on_so = fields.Boolean(string="Attach Sales Order")
     mail_attach_on_po = fields.Boolean(string="Attach Purchase Order")
 
 
