@@ -6,6 +6,7 @@ _logger = logging.getLogger(__name__)
 
 
 def migrate(cr, version):
+    env = util.env(cr)
 
     for record in env['product.document'].browse(ids):
         
