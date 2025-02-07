@@ -49,7 +49,7 @@ class PurchaseOrder(models.Model):
         return result
 
 
-    def _generate_dropship_report(self, report, dropship, lang='en'):
+    def _generate_dropship_report(self, report, dropship, lang='en_US'):
         if dropship:
             _logger.info("dropship found")
             if report.report_type in ['qweb-html', 'qweb-pdf']:
